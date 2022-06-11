@@ -1,43 +1,37 @@
 #include <windows.h>
+static ULONGLONG n, r;
+int randy() { return n = r, n ^= 0x8ebf635bee3c6d25, n ^= n << 5 | n >> 26, n *= 0xf3e05ca5c43e376b, r = n, n & 0x7fffffff; }
 
-int main()
-{
-    HWND v3; // rax
-    HBITMAP h; // [rsp+58h] [rbp-38h]
-    HDC hdcSrc; // [rsp+60h] [rbp-30h]
-    HDC hdc; // [rsp+68h] [rbp-28h]
-    void* lpvBits; // [rsp+70h] [rbp-20h]
-    int nHeight; // [rsp+78h] [rbp-18h]
-    int nWidth; // [rsp+7Ch] [rbp-14h]
-    DWORD v12; // [rsp+80h] [rbp-10h]
-    int j; // [rsp+84h] [rbp-Ch]
-    int v14; // [rsp+88h] [rbp-8h]
-    int i; // [rsp+8Ch] [rbp-4h]
-    v12 = GetTickCount();
-    nWidth = GetSystemMetrics(0);
-    nHeight = GetSystemMetrics(1);
-    lpvBits = VirtualAlloc(0, 4 * nWidth * (nHeight + 1), 0x3000u, 4u);
-    for (i = 0; ; i = (i + 1) % 2)
-    {
-        hdc = GetDC(0);
-        hdcSrc = CreateCompatibleDC(hdc);
-        h = CreateBitmap(nWidth, nHeight, 1u, 0x20u, lpvBits);
-        SelectObject(hdcSrc, h);
-        BitBlt(hdcSrc, 0, 0, nWidth, nHeight, hdc, 0, 0, 0xCC0020u);
-        GetBitmapBits(h, 4 * nHeight * nWidth, lpvBits);
-        v14 = 0;
-        if (GetTickCount() - v12 > 0xA)
-            rand();
-        for (j = 0; nHeight * nWidth > j; ++j)
-        {
-            if (!(j % nHeight) && !(rand() % 110))
-                v14 = rand() % 24;
-            *((BYTE*)lpvBits + 4 * j + v14) -= 5;
+DWORD WINAPI shader1(LPVOID lpParam) {
+    int time = GetTickCount();
+    int w = GetSystemMetrics(0), h = GetSystemMetrics(1);
+    RGBQUAD* data = (RGBQUAD*)VirtualAlloc(0, (w * h + w) * sizeof(RGBQUAD), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+    for (int i = 0;; i++, i %= 3) {
+        HDC desk = GetDC(NULL);
+        HDC hdcdc = CreateCompatibleDC(desk);
+        HBITMAP hbm = CreateBitmap(w, h, 1, 32, data);
+        SelectObject(hdcdc, hbm);
+        BitBlt(hdcdc, 0, 0, w, h, desk, 0, 0, SRCCOPY);
+        GetBitmapBits(hbm, 4 * h * w, data);
+        int v = 0;
+        BYTE byte = 0;
+        if ((GetTickCount() - time) > 10)
+            byte = randy()%0xff;
+        for (int i = 0; w * h > i; ++i) {
+            if (!(i % h) && !(randy() % 110))
+                v = randy() % 24;
+            *((BYTE*)data + 4 * i + v) -= 5;
         }
-        SetBitmapBits(h, 4 * nHeight * nWidth, lpvBits);
-        BitBlt(hdc, 0, 0, nWidth, nHeight, hdcSrc, 0, 0, 0xCC0020u);
-        DeleteObject(h);
-        DeleteObject(hdcSrc);
-        DeleteObject(hdc);
+        SetBitmapBits(hbm, w * h * 4, data);
+        BitBlt(desk, 0, 0, w, h, hdcdc, 0, 0, SRCCOPY);
+        DeleteObject(hbm);
+        DeleteObject(hdcdc);
+        DeleteObject(desk);
     }
+    return 0;
+} 
+
+int main() {
+    CreateThread(0, 0, shader1, 0, 0, 0);
+    Sleep(-1);
 }

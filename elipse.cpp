@@ -11,6 +11,6 @@ int main()
 		Pie(hdc, rand() % x, rand() % y, rand() % x, rand() % y, rand() % x, rand() % y, rand() % x, rand() % y);
     	DeleteObject(brush);
     	ReleaseDC(NULL, hdc);
-    	Sleep(100);
+    	Sleep(10);
 	}
 }

@@ -1,17 +1,12 @@
 #include <windows.h>
 
 int main(){
-    int hSrc; // [rsp+60h] [rbp-10h]
-    int wSrc; // [rsp+64h] [rbp-Ch]
-    HDC hdcDest; // [rsp+68h] [rbp-8h]
-    GetDC(0);
-    wSrc = GetSystemMetrics(0);
-    for (hSrc = GetSystemMetrics(1);
-        ;
-        StretchBlt(hdcDest, -10, -10, wSrc + 20, hSrc + 20, hdcDest, 0, 0, wSrc, hSrc, 0xCC0020u))
-    {
-        hdcDest = GetDC(0);
-        (hdcDest, 4);
-        StretchBlt(hdcDest, 10, 10, wSrc - 20, hSrc - 20, hdcDest, 0, 0, wSrc, hSrc, 0xCC0020u);
-    }
+	while(1){
+		HDC hdc = GetDC(0);
+    	int x = GetSystemMetrics(0);
+    	int y = GetSystemMetrics(1);
+    	StretchBlt(hdc, -10, -10, x + 20, y + 20, hdc, 0, 0, x, y, SRCCOPY);
+    	StretchBlt(hdc, 10, 10, x - 20, y - 20, hdc, 0, 0, x, y, SRCCOPY);
+    	ReleaseDC(0, hdc);
+	}
 }

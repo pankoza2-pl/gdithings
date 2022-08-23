@@ -20,9 +20,6 @@ DWORD WINAPI shader1(LPVOID lpParam) {
         SelectObject(hdcdc, hbm);
         BitBlt(hdcdc, 0, 0, w, h, desk, 0, 0, SRCCOPY);
         GetBitmapBits(hbm, w * h * 4, data);
-        BYTE byte = 0;
-        if ((GetTickCount() - time) > 60000)
-            byte = rand()%0xff;
         for (int i = 0; w * h > i; i++) {
 				int x = i % w, y = i / h, t = y ^ y | x;
 				data[i].rgb = x & y & t;

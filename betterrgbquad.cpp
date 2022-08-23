@@ -10,7 +10,6 @@ typedef union _RGBQUAD {
 } *PRGBQUAD;
 
 DWORD WINAPI shader1(LPVOID lpParam) {
-    int time = GetTickCount();
     int w = GetSystemMetrics(0), h = GetSystemMetrics(1);
     _RGBQUAD* data = (_RGBQUAD*)VirtualAlloc(0, (w * h + w) * sizeof(_RGBQUAD), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
     for (int i = 0;; i++, i %= 3) {

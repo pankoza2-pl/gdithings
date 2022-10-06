@@ -20,7 +20,7 @@ INT main(INT argv, CHAR* argc[]) {
 	bmi.bmiHeader.biPlanes = 1;
 	bmi.bmiHeader.biWidth = w;
 	bmi.bmiHeader.biHeight = h;
-	HBITMAP hbmTemp = CreateDIBSection(hdcScreen, &bmi, NULL, &rgbScreen, NULL, NULL);
+	HBITMAP hbmTemp = CreateDIBSection(hdcScreen, &bmi, NULL, (void**)&rgbScreen, NULL, NULL);
 	SelectObject(hdcMem, hbmTemp);
 	for (;;) {
 		hdcScreen = GetDC(0);

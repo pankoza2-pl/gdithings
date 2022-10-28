@@ -20,12 +20,12 @@ int main(){
     	HBRUSH brush = CreateSolidBrush(RGB(rand() % 255, rand() % 255, rand() % 255));
     	SelectObject(hdc, brush);
 		Ellipse(hdc, top_x, top_y, bottom_x, bottom_y);
-        if (y == GetSystemMetrics(SM_CYSCREEN))
+        if (y >= GetSystemMetrics(SM_CYSCREEN))
         {
                 signY = -1;
         }
  
-        if (x == GetSystemMetrics(SM_CXSCREEN))
+        if (x >= GetSystemMetrics(SM_CXSCREEN))
         {
             signX = -1;
         }

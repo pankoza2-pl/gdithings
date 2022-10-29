@@ -25,6 +25,7 @@ DWORD WINAPI thing6(LPVOID lpParam) {
         SelectObject(hdc, CreateSolidBrush(RGB(rand() % 255, rand() % 255, rand() % 255)));
         BitBlt(hdc, rand()%20, rand()%20, sw, sh, hdcMem, rand()%20, rand()%20, 0x123456);
         DeleteObject(hdcMem); DeleteObject(bm);
+        ReleaseDC(0, hdc);
         Sleep(1);
      }
 }

@@ -11,5 +11,6 @@ int main()
         int h = GetSystemMetrics(1);
         BitBlt(hdc, rand() % 2, rand() % 2, w, h, hdc, rand() % 2, rand() % 2, SRCCOPY);
         Sleep(10);
+        ReleaseDC(0, hdc);
     }
 }

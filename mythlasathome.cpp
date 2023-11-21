@@ -22,8 +22,10 @@ DWORD WINAPI thing6(LPVOID lpParam) {
         pt[2].x = rect.left + inc3;
         pt[2].y = rect.bottom - inc3;
         PlgBlt(hdcMem, pt, hdc, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, 0, 0, 0);
-        SelectObject(hdc, CreateSolidBrush(RGB(rand() % 255, rand() % 255, rand() % 255)));
+        HBRUSH brush = CreateSolidBrush(RGB(rand() % 255, rand() % 255, rand() % 255));
+        SelectObject(hdc, brush);
         BitBlt(hdc, rand()%20, rand()%20, sw, sh, hdcMem, rand()%20, rand()%20, 0x123456);
+        DeleteObject(brush);
         DeleteObject(hdcMem); DeleteObject(bm);
         ReleaseDC(0, hdc);
         Sleep(1);
